@@ -3,6 +3,8 @@ package blue.made.bluegin.codegen;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 public class Build
 {
 	public static void main(String[] args) throws IOException
@@ -19,13 +21,13 @@ public class Build
 		
 	}
 	
-	public void buildJava(File out)
+	public void buildJava(File out) throws IOException
 	{
-		
+		FileUtils.cleanDirectory(out);
 	}
 	
-	public void buildResources(File out)
+	public void buildResources(File out) throws IOException
 	{
-		
+		FileUtils.cleanDirectory(out);
 	}
 }

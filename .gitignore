@@ -5,6 +5,7 @@
 .metadata/
 .settings/
 .gradle/
+gradle-app.setting
 
 bin/
 build/
