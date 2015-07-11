@@ -3,6 +3,9 @@
 .classpath
 .project
 .metadata/
-bin/
 .settings/
 .gradle/
+
+bin/
+build/
+generated/

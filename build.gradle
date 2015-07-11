@@ -4,13 +4,29 @@ apply plugin: 'eclipse'
 archivesBaseName = "bluegin"
 version = "0.0"
 
-repositories 
-{
+sourceSets {
+    gen
+    generated {
+        java {
+            srcDir 'generated/java'
+        }
+        resources {
+            srcDir 'generated/resources'
+        }
+	}
+}
+
+eclipse {
+	classpath {
+		plusConfigurations += [configurations.genCompile]
+	}
+}
+
+repositories {
 	mavenCentral()
 }
 
-dependencies 
-{
+dependencies {
 	compile 'org.lwjgl.lwjgl:lwjgl:2.9.1'
 	compile 'org.lwjgl.lwjgl:lwjgl_util:2.9.1'
 	compile 'com.google.guava:guava:18.0'
@@ -19,7 +35,25 @@ dependencies
 	compile 'org.apache.commons:commons-io:1.3.2'
 	compile 'net.sf.trove4j:trove4j:3.0.3'
 	compile 'com.google.code.gson:gson:2.3'
-	compile 'net.sourceforge.jeuclid:jeuclid:2.9.6'
+	
+	compile sourceSets.generated.output
 	
 	testCompile 'junit:junit:4.11'
+	
+	genCompile 'com.squareup:javapoet:1.2.0'
+}
+
+task(genCode, dependsOn: 'genClasses', type: JavaExec) {
+	main = 'blue.made.bluegin.codegen.Build'
+	classpath = sourceSets.gen.runtimeClasspath
+	args ''
+	workingDir file('generated/')
+}
+
+compileGeneratedJava.dependsOn genCode
+
+jar 
+{
+    from sourceSets.generated.output
+    dependsOn generatedClasses
 }
