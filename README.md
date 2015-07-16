@@ -11,15 +11,12 @@ Unfortunately, it is very very minimalist right now. I mean, parts of it exist i
 Feel free.
 
 ##How to Build##
-1. Open the command prompt of your choice
-2. Type `gradlew build`
-3. Press `ENTER`
-5. PROFIT! (Your .jar file is in build/libs/)
+1. Run `./gradlew build`
+2. Your .jar file is in build/libs/
 
 ##Eclipse Setup##
-1. Create a workspace
-2. Open the command prompt of your choice
-3. Run `gradlew eclipse`
-4. Import the now created project (`file->import->general->existing projects into workspace`)
+1. Create your workspace
+2. Run `./gradlew eclipse`
+3. Import the now created project (`file->import->general->existing projects into workspace`)
 
 The two main source sets are `src/main` which contains the main BlueGin code and `src/gen` which is used for automatically generating the boring classes. Gradle should resolve the dependencies just fine, but eclipse will complain at you for using the generated code until you run `gradlew genCode` and refresh your project.
