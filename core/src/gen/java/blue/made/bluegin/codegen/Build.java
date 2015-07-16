@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import org.apache.commons.io.FileUtils;
 
 import blue.made.bluegin.codegen.classes.GL;
+import blue.made.bluegin.codegen.classes.GLCapabilities;
 import blue.made.bluegin.codegen.classes.GLEnum;
 
 import com.google.gson.JsonObject;
@@ -33,6 +34,7 @@ public class Build
 		FileUtils.cleanDirectory(out);
 		
 		JsonObject cfg = new JsonParser().parse(new InputStreamReader(GL.class.getResourceAsStream("/cfg/gl.json"))).getAsJsonObject();
+		new GLCapabilities(cfg).build().writeTo(out);
 		new GL(cfg).build().writeTo(out);
 		new GLEnum(cfg).build().writeTo(out);
 		

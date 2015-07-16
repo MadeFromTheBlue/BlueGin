@@ -9,4 +9,5 @@ gradle-app.setting
 
 bin/
 build/
-generated/
+
+core/generated-src/

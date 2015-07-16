@@ -14,7 +14,7 @@ public class GL extends ClassBuilder
 	
 	public GL(JsonObject cfg)
 	{
-		super("GL", "blue.made.bluegin");
+		super("GL", "blue.made.bluegin.core.gl");
 		
 		this.cfg = cfg.get("funcs").getAsJsonObject();
 	}
