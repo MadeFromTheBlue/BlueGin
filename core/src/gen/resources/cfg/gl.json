@@ -3841,7 +3841,7 @@
 		},
 		"INVALID_INDEX": {
 			"from": {
-				"GL_VERSION_3_1": "0xFFFFFFFFu"
+				"GL_VERSION_3_1": "0xFFFFFFFF"
 			}
 		},
 		"CONTEXT_CORE_PROFILE_BIT": {
@@ -4051,7 +4051,7 @@
 		},
 		"TIMEOUT_IGNORED": {
 			"from": {
-				"GL_VERSION_3_2": "0xFFFFFFFFFFFFFFFFull"
+				"GL_VERSION_3_2": "0xFFFFFFFFFFFFFFFFl"
 			}
 		},
 		"SYNC_FLUSH_COMMANDS_BIT": {

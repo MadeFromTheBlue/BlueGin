@@ -13,7 +13,7 @@ configure(subprojects.findAll {it.isgen}) {
 	afterEvaluate {
 		sourceSets {
 			gen
-			generated {
+			main {
 				java {
 					srcDir 'generated-src/java'
 				}
@@ -29,13 +29,9 @@ configure(subprojects.findAll {it.isgen}) {
 			}
 		}
 		
-		dependencies {
-			compile sourceSets.generated.output
-			
+		dependencies {			
 			genCompile 'com.squareup:javapoet:1.2.0'
 			genCompile libs
-			
-			generatedCompile libs
 		}
 		
 		task(genCode, dependsOn: 'genClasses', type: JavaExec) {
@@ -45,12 +41,12 @@ configure(subprojects.findAll {it.isgen}) {
 			workingDir file(projectDir.getPath() + '/generated-src/')
 		}
 
-		compileGeneratedJava.dependsOn genCode
+		compileJava.dependsOn genCode
 
 		jar 
 		{
-			from sourceSets.generated.output
-			dependsOn generatedClasses
+			from sourceSets.main.output
+			dependsOn classes
 		}
 	}
 }

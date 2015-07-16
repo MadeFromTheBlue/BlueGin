@@ -7,6 +7,7 @@ import javax.lang.model.element.Modifier;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -38,25 +39,39 @@ public class GLEnum extends EnumBuilder
 			boolean flag = false;
 			for (Entry<String, JsonElement> f : e.getValue().getAsJsonObject().get("from").getAsJsonObject().entrySet())
 			{
-				if (flag)
+				try
 				{
-					b.addJavadoc(", ", f.getKey());
+					CodeBlock.Builder block = CodeBlock.builder();
+					block.beginControlFlow("if (GLCapabilities.$L)", f.getKey());
+					if (f.getValue().isJsonPrimitive())
+					{
+						String n = f.getValue().getAsString();//.replaceAll("^(0x[0-9a-fA-F]+|0b[01]+|[0-9]+)", "$1");
+						String conv = "";
+						if (n.endsWith("l"))
+						{
+							conv = "(int) ";
+						}
+						block.add("return $L$L;\n", conv, n);
+					}
+					block.endControlFlow();
+					m.addCode(block.build());
+					
+					if (flag)
+					{
+						b.addJavadoc(", ", f.getKey());
+					}
+					else
+					{
+						flag = true;
+					}
+					b.addJavadoc("$L", f.getKey());
 				}
-				else
+				catch (NumberFormatException nfe)
 				{
-					flag = true;
+					
 				}
-				b.addJavadoc("$L", f.getKey());
-				CodeBlock.Builder block = CodeBlock.builder();
-				block.beginControlFlow("if (GLCapabilities.$L)", f.getKey());
-				if (f.getValue().isJsonPrimitive())
-				{
-					block.add("return $L;\n", f.getValue().getAsString().replaceAll("^(0x([0-9]|[a-f]|[A-F])+|[0-9]+).*$", "$1"));
-				}
-				block.endControlFlow();
-				m.addCode(block.build());
 			}
-			m.addCode("throw new BGGLNotSupportedException($S);", e.getKey().replaceAll("^_?(.*)$", "GL_$1"));
+			m.addCode("throw new $T($S);", ClassName.get("blue.made.bluegin.core.exception", "GLUnsupportedException"), e.getKey().replaceAll("^_?(.*)$", "GL_$1"));
 			
 			b.addMethod(m.build());
 			
