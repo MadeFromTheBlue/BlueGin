@@ -53,7 +53,7 @@ public interface Vector extends Cloneable
 	
 	public static double dot(Vector a, Vector b)
 	{
-		//min not max because once one vector ends, the default zeros will prevent the other vector from making any change
+		//min not max because once one vector ends, the default zeros will prevent the other vector from making any change to the sum
 		int size = Math.min(a.size(), b.size());
 		double sum = 0;
 		for (int i = 0; i < size; i++)
@@ -61,5 +61,48 @@ public interface Vector extends Cloneable
 			sum += a.get(i) * b.get(i);
 		}
 		return sum;
+	}
+	
+	public static Vector add(Vector a, Vector b)
+	{
+		Vector out = a.clone();
+		out.add(b);
+		return out;
+	}
+	
+	public static Vector subtract(Vector a, Vector b)
+	{
+		Vector out = a.clone();
+		out.subtract(b);
+		return out;
+	}
+	
+	public static Vector multiply(Vector a, Vector b)
+	{
+		Vector out = a.clone();
+		out.multiply(b);
+		return out;
+	}
+	
+	public static Vector divide(Vector a, Vector b)
+	{
+		Vector out = a.clone();
+		out.divide(b);
+		return out;
+	}
+	
+	public static Vector mix(Vector a, Vector b, double factor)
+	{
+		return mix(a, 1.0 - factor, b, factor);
+	}
+	
+	public static Vector mix(Vector a, double acoefficient, Vector b, double bcoefficient)
+	{
+		Vector A = a.clone();
+		Vector B = b.clone();
+		A.multiply(acoefficient);
+		B.multiply(bcoefficient);
+		A.add(B);
+		return A;
 	}
 }
