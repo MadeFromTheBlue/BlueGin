@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import blue.made.bluegin.codegen.classes.GLCapabilities;
 import blue.made.bluegin.codegen.classes.GLEnum;
+import blue.made.bluegin.codegen.classes.Matrix;
 import blue.made.bluegin.codegen.classes.Vector;
 
 import com.google.gson.JsonObject;
@@ -41,6 +42,13 @@ public class Build
 			for (Vector.VectorType vectype : Vector.VectorType.values())
 			{
 				new Vector(size, vectype).build().writeTo(out);
+			}
+		}
+		for (int size = 1; size <= 4; size++)
+		{
+			for (Vector.VectorType vectype : Vector.VectorType.values())
+			{
+				new Matrix(size, vectype).build().writeTo(out);
 			}
 		}
 		

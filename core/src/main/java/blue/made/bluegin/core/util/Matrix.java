@@ -12,6 +12,20 @@ public interface Matrix
 	
 	public double[][] values();
 	
+	public double[] row(int row);
+	
+	public default Vector rowVec(int row)
+	{
+		return new Vectornd(this.row(row));
+	}
+	
+	public double[] column(int column);
+	
+	public default Vector columnVec(int column)
+	{
+		return new Vectornd(this.column(column));
+	}
+	
 	public Matrix transpose();
 	
 	public default boolean isSquare()

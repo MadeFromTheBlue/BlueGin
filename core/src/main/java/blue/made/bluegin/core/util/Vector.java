@@ -63,6 +63,13 @@ public interface Vector extends Cloneable
 		return sum;
 	}
 	
+	public static Vector cross(Vector a, Vector b)
+	{
+		Vectornd out = new Vectornd(Math.max(a.size(), b.size()));
+		
+		return out;
+	}
+	
 	public static Vector add(Vector a, Vector b)
 	{
 		Vector out = a.clone();
