@@ -63,9 +63,18 @@ public interface Vector extends Cloneable
 		return sum;
 	}
 	
-	public static Vector cross(Vector a, Vector b)
+	public static Vector3d cross(Vector a, Vector b)
 	{
-		Vectornd out = new Vectornd(Math.max(a.size(), b.size()));
+		Vector3d out = new Vector3d();
+		
+		out.x += a.get(1) * b.get(2);
+		out.x -= a.get(2) * b.get(1);
+		
+		out.y -= a.get(1) * b.get(0);
+		out.y += a.get(0) * b.get(1);
+		
+		out.z += a.get(0) * b.get(2);
+		out.z -= a.get(2) * b.get(0);
 		
 		return out;
 	}

@@ -14,6 +14,7 @@ public class Matrix extends ClassBuilder
 	
 	public final int size;
 	public final VectorType vectype;
+	public final ClassName nmat;
 	
 	public Matrix(int size, VectorType type)
 	{
@@ -24,6 +25,7 @@ public class Matrix extends ClassBuilder
 		{
 			throw new IllegalArgumentException("size must be greater than 0 and less than 9");
 		}
+		this.nmat = ClassName.get("blue.made.bluegin.core.util", "Matrixn" + this.vectype.abriv);
 	}
 	
 	public String varName(int row, int column)

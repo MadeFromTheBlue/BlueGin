@@ -44,6 +44,7 @@ public class Build
 				new Vector(size, vectype).build().writeTo(out);
 			}
 		}
+		/*
 		for (int size = 1; size <= 4; size++)
 		{
 			for (Vector.VectorType vectype : Vector.VectorType.values())
@@ -51,7 +52,7 @@ public class Build
 				new Matrix(size, vectype).build().writeTo(out);
 			}
 		}
-		
+		*/
 	}
 	
 	public void buildResources(File out) throws IOException
