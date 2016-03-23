@@ -1,23 +1,20 @@
 package blue.made.bluegin.core.shader;
 
-public class ShaderCreateInfo
-{
-	public static enum Error
-	{
+public class ShaderCreateInfo {
+	public enum Error {
 		NONE,
 		ALREADY_CREATED,
 		SOURCE_MISSING,
 		IO_EXCEPTION,
-		COMPILE_ERROR;
+		COMPILE_ERROR
 	}
-	
-	public ShaderCreateInfo(Error state, String log, Exception ex)
-	{
+
+	public ShaderCreateInfo(Error state, String log, Exception ex) {
 		this.state = state;
 		this.log = log;
 		this.exeption = ex;
 	}
-	
+
 	public final Error state;
 	public final String log;
 	public final Exception exeption;

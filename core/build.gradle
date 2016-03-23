@@ -17,6 +17,7 @@ libs << 'org.apache.commons:commons-io:1.3.2'
 libs << 'net.sf.trove4j:trove4j:3.0.3'
 libs << 'com.google.code.gson:gson:2.3'
 libs << 'org.lwjgl:lwjgl:3.0.0a'
+libs << 'com.squareup:javapoet:1.6.0'
 
 dependencies {
 	compile libs

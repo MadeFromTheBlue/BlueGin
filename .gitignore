@@ -1,10 +1,12 @@
 *.class
 *.jar
+*.iml
 .classpath
 .project
 .metadata/
 .settings/
 .gradle/
+.idea/
 gradle-app.setting
 
 bin/
