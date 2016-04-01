@@ -1,16 +1,14 @@
 package blue.made.bluegin.core.render;
 
 import blue.made.bluegin.core.gl.GLRequires;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.*;
 
 /**
  * A {@link BlendSetting} object contains the parameters for controlling how the graphics card will blend any fragments
  * output by the current fragment shader together with the contents of the current frame buffer.
  * If the current blend mode is {@link #set()} to {@link #NONE}, then any newly rendered fragments will simply replace
  * the existing pixels in the FBO, otherwise the graphics card will preform a linear combination
- * ({@code srcParam * srcPixel + dstParam * dstPixel})  of the output pixels (the source or src) and the pixels already
+ * ({@code srcParam * srcPixel + dstParam * dstPixel}) of the output pixels (the source or src) and the pixels already
  * in the FBO (the destination or dst).
  *
  * @see <a href="https://www.opengl.org/wiki/Blending">OpenGL Blending</a>

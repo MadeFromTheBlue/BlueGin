@@ -24,7 +24,7 @@ public class Vector extends ClassBuilder {
 		UNSIGNED_BYTE(TypeName.BYTE, "ub") {
 			@Override
 			String convertTo(String in) {
-				return String.format("(byte) (%s * 255)", in);
+				return String.format("clamp(%s * 255)", in);
 			}
 
 			@Override
@@ -72,7 +72,7 @@ public class Vector extends ClassBuilder {
 		SIGNED_BYTE(TypeName.BYTE, "sb") {
 			@Override
 			String convertTo(String in) {
-				return String.format("(byte) (%s * 128)", in);
+				return String.format("clamp(%s * 128)", in);
 			}
 
 			@Override
