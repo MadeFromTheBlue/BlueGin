@@ -326,7 +326,9 @@ public abstract class GLBuffer extends GLObject {
 		 * @param to The buffer that will store the data
 		 */
 		public void build(GLBuffer to) {
+			boolean flag = false;
 			if (directData == null) {
+				flag = true;
 				if (streamData != null) {
 					directData = BufferUtils.createByteBuffer(streamData.size());
 					directData.put(streamData.backingArray(), 0, streamData.size());
@@ -341,6 +343,9 @@ public abstract class GLBuffer extends GLObject {
 			to.size = directData.remaining();
 			GL15.glBindBuffer(type.glenum, to.id);
 			GL15.glBufferData(type.glenum, directData, usageenum);
+			if (flag) {
+				directData = null;
+			}
 		};
 	}
 
