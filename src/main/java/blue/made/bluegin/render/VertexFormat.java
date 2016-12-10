@@ -1,14 +1,17 @@
 package blue.made.bluegin.render;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.*;
 
-import java.nio.ByteBuffer;
 import java.util.LinkedList;
 
 public class VertexFormat {
     public static class Attrib {
-        private Attrib(int type, int bytes) {
+        private final int veclen;
+        private final int type;
+        private final int bytes;
+        private final boolean isnorm;
+
+        public Attrib(int type, int bytes) {
             this(1, type, bytes, false);
         }
 
@@ -26,21 +29,6 @@ public class VertexFormat {
             this.bytes = bytes;
             this.isnorm = isnorm;
         }
-
-        private int veclen;
-        private int type;
-        private int bytes;
-        private boolean isnorm;
-
-        public static final Attrib BYTE = new Attrib(GL11.GL_BYTE, 1);
-        public static final Attrib UNSIGNED_BYTE = new Attrib(GL11.GL_UNSIGNED_BYTE, 1);
-        ;
-        public static final Attrib SHORT = new Attrib(GL11.GL_SHORT, 2);
-        public static final Attrib UNSIGNED_SHORT = new Attrib(GL11.GL_UNSIGNED_SHORT, 2);
-        public static final Attrib INT = new Attrib(GL11.GL_INT, 4);
-        public static final Attrib UNSIGNED_INT = new Attrib(GL11.GL_UNSIGNED_INT, 4);
-        public static final Attrib FLOAT = new Attrib(GL11.GL_FLOAT, 4);
-        public static final Attrib DOUBLE = new Attrib(GL11.GL_DOUBLE, 8);
 
         //public static final Attrib COLOR = new Attrib(GL11.GL_BGRA, GL11.GL_DOUBLE, 8);
 
@@ -81,8 +69,6 @@ public class VertexFormat {
             return new Attrib(1, -1, bytes, false) {
                 protected void apply(int index, int stride, int totalSize, int byteOffset) {
                 }
-
-                ;
             };
         }
 
@@ -110,12 +96,8 @@ public class VertexFormat {
             return empty(this.bytes);
         }
 
-        protected void apply(int index, int stride, int totalSize, int byteOffset) {
-            GL20.glVertexAttribPointer(index, veclen, type, isnorm, stride, (long) byteOffset);
-        }
-
-        protected void apply(int index, int stride, int totalSize, ByteBuffer firstMemLoc) {
-            GL20.glVertexAttribPointer(index, veclen, type, isnorm, stride, firstMemLoc);
+        protected void apply(int index, int totalSize, int byteOffset) {
+            GL20.glVertexAttribPointer(index, veclen, type, isnorm, totalSize, (long) byteOffset);
         }
     }
 
@@ -127,28 +109,63 @@ public class VertexFormat {
     }
 
     static class Builder {
-        private int totalVertSize = 0;
         private int currentPos = 0;
-        private int attribCount = 0;
         private LinkedList<AttribInfo> attribs;
 
         public void add(Attrib attibuteFormat, String name) {
             AttribInfo info = new AttribInfo();
-            info.index = attribCount++;
             info.offset = currentPos;
+
             currentPos += attibuteFormat.bytes;
-            totalVertSize += attibuteFormat.bytes;
+
+            // empty attrib
+            if (attibuteFormat.type == -1) return;
+
+            info.name = name;
+            info.type = attibuteFormat;
+            info.index = attribs.size();
+
             attribs.add(info);
         }
 
         public VertexFormat build() {
-            VertexFormat format = new VertexFormat();
-            add(Attrib.UNSIGNED_BYTE.vector4().normalized(), "color");
+            AttribInfo[] list = new AttribInfo[attribs.size()];
+            attribs.toArray(list);
+            VertexFormat format = new VertexFormat(currentPos, list);
             return format;
         }
     }
 
-    public Builder builder() {
+    public static Builder builder() {
         return new Builder();
+    }
+
+    public static final Attrib BYTE = new Attrib(GL11.GL_BYTE, 1);
+    public static final Attrib UNSIGNED_BYTE = new Attrib(GL11.GL_UNSIGNED_BYTE, 1);
+    public static final Attrib SHORT = new Attrib(GL11.GL_SHORT, 2);
+    public static final Attrib UNSIGNED_SHORT = new Attrib(GL11.GL_UNSIGNED_SHORT, 2);
+    public static final Attrib INT = new Attrib(GL11.GL_INT, 4);
+    public static final Attrib UNSIGNED_INT = new Attrib(GL11.GL_UNSIGNED_INT, 4);
+    public static final Attrib FLOAT = new Attrib(GL11.GL_FLOAT, 4);
+    public static final Attrib DOUBLE = new Attrib(GL11.GL_DOUBLE, 8);
+
+    @GLRequires(major = 3, minor = 0)
+    public static final Attrib HALF_FLOAT = new Attrib(GL30.GL_HALF_FLOAT, 2);
+
+    private final int size;
+    private final AttribInfo[] list;
+
+    public VertexFormat(int size, AttribInfo[] list) {
+        this.size = size;
+        this.list = list;
+    }
+
+    public void format(GraphicsBuffer buffer) {
+        if (buffer.getType() != GraphicsBuffer.BufferType.ARRAY_BUFFER) throw new IllegalStateException("Buffer is not a vertex buffer");
+        buffer.bind();
+        for (AttribInfo info : list) {
+            GL20.glEnableVertexAttribArray(info.index);
+            info.type.apply(info.index, size, info.offset);
+        }
     }
 }

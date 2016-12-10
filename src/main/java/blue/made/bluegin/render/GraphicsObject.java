@@ -1,8 +1,8 @@
-package blue.made.bluegin.gl;
+package blue.made.bluegin.render;
 
 import blue.made.bluegin.BlueGin;
 
-public abstract class GLObject {
+public abstract class GraphicsObject {
     /**
      * The object id assigned by glGen*()
      */
@@ -17,7 +17,7 @@ public abstract class GLObject {
      */
     public boolean deleteOnGC = BlueGin.DEFAULT_DELETE_ON_GC;
 
-    protected GLObject(int id) {
+    protected GraphicsObject(int id) {
         this.id = id;
     }
 

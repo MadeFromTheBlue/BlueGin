@@ -1,6 +1,5 @@
 package blue.made.bluegin.render;
 
-import blue.made.bluegin.gl.GLRequires;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
@@ -16,7 +15,6 @@ import org.lwjgl.opengl.GL20;
  * @see <a href="https://www.opengl.org/wiki/Blending">OpenGL Blending</a>
  * @see <a href="https://www.opengl.org/wiki/Rendering_Pipeline_Overview">The OpenGL Render Pipeline</a>
  */
-@GLRequires("2.0")
 public abstract class BlendSetting {
     public static enum Param {
         ONE(GL11.GL_ONE) {

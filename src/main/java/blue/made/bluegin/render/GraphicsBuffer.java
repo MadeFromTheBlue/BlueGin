@@ -1,4 +1,4 @@
-package blue.made.bluegin.gl;
+package blue.made.bluegin.render;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -7,8 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.nio.*;
 
-@GLRequires("1.5")
-public abstract class GLBuffer extends GLObject {
+public abstract class GraphicsBuffer extends GraphicsObject {
     public static enum AccessFrequency {
         /**
          * The data store contents will be modified once and used many times.
@@ -133,7 +132,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods. The provided buffer is copied by this method into a new direct buffer that will be used by LWJGL.
          *
          * @param buffer A buffer of data
@@ -146,7 +145,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods. If the given buffer is direct, then {@link #setDirectData(ByteBuffer)} is used, otherwise
          * this method calls {@link #setDataCopy(ByteBuffer)}.
          *
@@ -162,7 +161,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param buffer A buffer of data
@@ -174,7 +173,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param buffer A buffer of data
@@ -186,7 +185,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param buffer A buffer of data
@@ -198,7 +197,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param buffer A buffer of data
@@ -210,7 +209,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param data The data that will fill the buffer
@@ -222,7 +221,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param data The data that will fill the buffer
@@ -234,7 +233,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param data The data that will fill the buffer
@@ -246,7 +245,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param data The data that will fill the buffer
@@ -258,7 +257,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Set the data that will be stored in the GLBuffer. This overrides any data provided by any other builder
+         * Set the data that will be stored in the GraphicsBuffer. This overrides any data provided by any other builder
          * methods.
          *
          * @param data The data that will fill the buffer
@@ -277,7 +276,7 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Provides a DataOutputStream for writing the data that will fill the buffer when {@link #build(GLBuffer)} is
+         * Provides a DataOutputStream for writing the data that will fill the buffer when {@link #build(GraphicsBuffer)} is
          * called. Any data written to the DataOutputStream will be ignored if {@link #setDirectData(ByteBuffer) direct data}
          * is provided. Each call to this method provides a new DataOutputStream, but all DataOutputStreams write to
          * the same data.
@@ -329,14 +328,14 @@ public abstract class GLBuffer extends GLObject {
         }
 
         /**
-         * Store the data with the access settings and data type into the provided GLBuffer. Any existing contents of
-         * the GLBuffer will be deleted and replaced.
+         * Store the data with the access settings and data type into the provided GraphicsBuffer. Any existing contents of
+         * the GraphicsBuffer will be deleted and replaced.
          * <br>
          * On the implementation side, this calls <a href="https://www.opengl.org/wiki/GLAPI/glBufferData">glBufferData(target, size, data, usage)</a>.
          *
          * @param to The buffer that will store the data
          */
-        public void build(GLBuffer to) {
+        public void build(GraphicsBuffer to) {
             boolean flag = false;
             if (directData == null) {
                 flag = true;
@@ -358,8 +357,6 @@ public abstract class GLBuffer extends GLObject {
                 directData = null;
             }
         }
-
-        ;
     }
 
     /**
@@ -378,17 +375,21 @@ public abstract class GLBuffer extends GLObject {
     private AccessFrequency accessfreq;
     private AccessType accesstype;
 
-    public GLBuffer(int id) {
-        super(GL15.glGenBuffers());
+    public GraphicsBuffer(int id) {
+        super(id);
+    }
+
+    public GraphicsBuffer() {
+        this(GL15.glGenBuffers());
     }
 
     /**
      * Warning! This method requires OpenGL 4.3
      * <br><br>
-     * This method makes it as though {@link ContentsBuilder#build(GLBuffer) ContentsBuilder.build(this)} was never
+     * This method makes it as though {@link ContentsBuilder#build(GraphicsBuffer) ContentsBuilder.build(this)} was never
      * called on this object. The uploaded data is deleted.
      */
-    @GLRequires("4.3")
+    @GLRequires(major = 4, minor = 3)
     public void invalidate() {
         GL43.glInvalidateBufferData(this.id);
         target = null;
