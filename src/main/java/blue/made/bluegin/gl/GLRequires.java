@@ -1,4 +1,4 @@
-package blue.made.bluegin.core.gl;
+package blue.made.bluegin.gl;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface GLRequires {
-	public String value();
+    public String value();
 }
