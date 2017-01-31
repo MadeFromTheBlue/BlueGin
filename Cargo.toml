@@ -1,0 +1,11 @@
+[package]
+name = "bluegin-natives"
+version = "0.0.0"
+include = ["src/main/rust/**/*"]
+
+[dependencies]
+jni = "0.3.1"
+glium = "0.16.0"
+
+[lib]
+crate_type = ["dylib"]
