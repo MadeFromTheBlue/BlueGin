@@ -1,11 +1,12 @@
 [package]
 name = "bluegin-natives"
 version = "0.0.0"
-include = ["src/main/rust/**/*"]
 
 [dependencies]
 jni = "0.3.1"
 glium = "0.16.0"
+lazy_static = "0.1.*"
 
 [lib]
+path = "src/main/rust/lib.rs"
 crate_type = ["dylib"]
